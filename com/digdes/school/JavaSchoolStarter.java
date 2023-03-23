@@ -131,6 +131,7 @@ public class JavaSchoolStarter {
                 // DELETE WHERE ‘id’=3
                 finalList = new ArrayList<>(); // удаляемое
                 Stack<String> stack = findMatches(request);
+                checkColumns(stack);
 
                 if (request.contains(" and ") || request.contains(" AND ")) {
                     List<Map<String, Object>> list = getItemsFromList((stack.pop() + " " + stack.pop() + " " + stack.pop()).split(" ")); //1 условие
