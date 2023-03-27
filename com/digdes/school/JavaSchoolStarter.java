@@ -131,32 +131,35 @@ public class JavaSchoolStarter {
                 // DELETE WHERE ‘id’=3
                 finalList = new ArrayList<>(); // удаляемое
                 Stack<String> stack = findMatches(request);
-                checkColumns(stack);
-
-                if (request.contains(" and ") || request.contains(" AND ")) {
-                    List<Map<String, Object>> list = getItemsFromList((stack.pop() + " " + stack.pop() + " " + stack.pop()).split(" ")); //1 условие
-                    List<Map<String, Object>> list1 = getItemsFromList((stack.pop() + " " + stack.pop() + " " + stack.pop()).split(" ")); //2 условие
-                    for (Map<String, Object> item : list) {
-                        if (list1.contains(item)) {
-                            finalList.add(item);
+                if (!stack.isEmpty()) {
+                    checkColumns(stack);
+                    if (request.contains(" and ") || request.contains(" AND ")) {
+                        List<Map<String, Object>> list = getItemsFromList((stack.pop() + " " + stack.pop() + " " + stack.pop()).split(" ")); //1 условие
+                        List<Map<String, Object>> list1 = getItemsFromList((stack.pop() + " " + stack.pop() + " " + stack.pop()).split(" ")); //2 условие
+                        for (Map<String, Object> item : list) {
+                            if (list1.contains(item)) {
+                                finalList.add(item);
+                            }
                         }
-                    }
-                } else if (request.contains(" or ") || request.contains(" OR ")) {
-                    List<Map<String, Object>> list = getItemsFromList((stack.pop() + " " + stack.pop() + " " + stack.pop()).split(" ")); //1 условие
-                    List<Map<String, Object>> list1 = getItemsFromList((stack.pop() + " " + stack.pop() + " " + stack.pop()).split(" ")); //2 условие
-                    finalList.addAll(list);
-                    finalList.addAll(list1);
+                    } else if (request.contains(" or ") || request.contains(" OR ")) {
+                        List<Map<String, Object>> list = getItemsFromList((stack.pop() + " " + stack.pop() + " " + stack.pop()).split(" ")); //1 условие
+                        List<Map<String, Object>> list1 = getItemsFromList((stack.pop() + " " + stack.pop() + " " + stack.pop()).split(" ")); //2 условие
+                        finalList.addAll(list);
+                        finalList.addAll(list1);
 
-                    for (Map<String,Object> elem : list1) {
-                        if (list.contains(elem)) {
-                            finalList.remove(elem);
+                        for (Map<String, Object> elem : list1) {
+                            if (list.contains(elem)) {
+                                finalList.remove(elem);
+                            }
                         }
+                    } else {
+                        finalList.addAll(getItemsFromList((stack.pop() + " " + stack.pop() + " " + stack.pop()).split(" ")));
                     }
+                    data.removeAll(finalList);
                 } else {
-                    finalList.addAll(getItemsFromList((stack.pop() + " " + stack.pop() + " " + stack.pop()).split(" ")));
+                    data.removeAll(data);
                 }
 
-                data.removeAll(finalList);
                 return finalList;
             case "EXIT":
                 System.exit(1);
